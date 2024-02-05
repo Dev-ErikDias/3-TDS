@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário</title>
+    <script src="script.js"></script>
+</head>
+<body>
+    <form >
+        <label>Nome: <input type="text" name="nome" onkeydown="avaliarLetra(this);"></label>
+        <br><br>
+        <label>Idade: <input type="number"></label>
+        <br><br>
+        <label>Gênero: <input type="radio" name="sexo">Masculino <input type="radio" name="sexo">Feminino <input type="radio" name="sexo">Outro</label>
+        <br><br>
+        <label>Curso: 
+        <select name="curso">
+            <option value="Aqui">Aquicultura</option>
+            <option value="Tds">Tds</option>
+            <option value="Edif">Edificações</option>
+            <option value="Ma">Meio-Ambiente</option>
+        </select></label>
+        <br><br>
+        <label><input type="checkbox"> Li e concordo com os <a href="#">Termos e Condições</a></label>
+        <br><br>
+        <input type="submit" value="Enviar">
+    </form>
+    <div id="mensagem"></div>
+</body>
+</html>
