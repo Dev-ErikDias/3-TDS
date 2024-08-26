@@ -43,9 +43,12 @@ class criaClasses
 
 		//Criação de classes da camada dao
 		foreach ($tabelas as $tabela) {
-			$conteudo = "<?php\nclass " . ucfirst($tabela->$banco) . "DAO{\n";
-			$conteudo .= "\tpublic __construct() {\n}\n";
-			$conteudo .= "\tfunction inserir() {\n}\n";
+			$conteudo = "<?php\ninclude 'conexao.php';";
+			$conteudo .= "\nclass " . ucfirst($tabela->$banco) . "DAO{\n";
+			$conteudo .= "\tprivate " . '$con=Conexao::conectar();';
+			$conteudo .= "\n\tpublic __construct() {\n}\n";
+			$conteudo .= "\tfunction inserir(" . '$obj' . ") {\n";
+			$conteudo .= "\n\t" . '$sql = "insert into ' . $tabela->$banco . "()"; //TEM Q FAZER UM FOREACH PARA ADICIONAR OS ATRIBUTOS (FAZER)
 			$conteudo .= "\tfunction excluir() {\n}\n";
 			$conteudo .= "\tfunction buscar() {\n}\n";
 			$conteudo .= "\tfunction alterar() {\n}\n}\n?>";
