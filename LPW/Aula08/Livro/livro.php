@@ -7,24 +7,45 @@ include_once('conexao.php');
 $conn = Conexao::getConexao();
 //print_r($conn);
 
+//Validação Back-end
+$msgErro = '';
+$msgSucesso = '';
 
 //Verifica se o usuário já clicou no gravar
+
 if ($_POST) {
-    $titulo = $_POST['titulo'];
-    $genero = $_POST['genero'];
-    $qtdPaginas = $_POST['qtdPaginas'];
+    $titulo = trim($_POST['titulo']) ? trim($_POST['titulo']) : null;
+    $genero = trim($_POST['genero']) ? trim($_POST['genero']) : null;
+    $qtdPaginas = trim($_POST['qtdPaginas']) ? trim($_POST['qtdPaginas']) : null;
 
     //echo "$titulo - $genero - $qtdPaginas";
 
-    $sql = "INSERT INTO livros (titulo, genero, qtd_paginas)
-        VALUES (?, ?, ?)";
+    if (!$titulo) {
 
-    $stm = $conn->prepare($sql);
-    $stm->execute([$titulo,  $genero, $qtdPaginas]);
+        $msgErro = "Informe o título php";
+    } else if (!$genero) {
 
-    //Redirecionar para a pagina desejada
-    header("Location: livro.php");
+        $msgErro = "Informe o gênero php";
+    } else if (!$qtdPaginas) {
+
+        $msgErro = "Informe a quantidade de páginas php";
+    } else {
+
+        $msgSucesso = "Título: $titulo - Gênero: $genero - Quantidade de Páginas: $qtdPaginas";
+        
+        $sql = "INSERT INTO livros (titulo, genero, qtd_paginas)
+            VALUES (?, ?, ?)";
+
+        $stm = $conn->prepare($sql);
+        $stm->execute([$titulo,  $genero, $qtdPaginas]);
+
+        //Redirecionar para a pagina desejada
+        header("Location: livro.php");
+        
+    }
 }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -39,10 +60,10 @@ if ($_POST) {
 <body>
     <h3>Formulário do livro</h3>
 
-    <form method="post">
-        <input type="text" name="titulo" placeholder="Informe o título">
+    <form method="post" onsubmit="/*return validarFormulario();*/">
+        <input type="text" name="titulo" placeholder="Informe o título" id="titulo">
         <br><br>
-        <select name="genero">
+        <select name="genero" id="genero">
             <option value="">--Selecione o gênero--</option>
             <option value="A">Aventura</option>
             <option value="D">Drama</option>
@@ -51,16 +72,18 @@ if ($_POST) {
             <option value="O">Outros</option>
         </select>
         <br><br>
-        <input type="number" name="qtdPaginas" placeholder="Quantidade de páginas">
+        <input type="number" name="qtdPaginas" placeholder="Quantidade de páginas" id="qtdPagina">
         <br><br>
         <input type="submit" value="Salvar">
         <input type="reset" value="Limpar">
     </form>
 
+    <span id="msg" style="color: red;"><?= $msgErro; ?></span>
+    <div style="color: green;"><?= $msgSucesso; ?></div>
+
     <h3>Listagem do livros</h3>
 
     <?php
-
     $sql = "SELECT * FROM livros";
     $stm = $conn->prepare($sql);
     $stm->execute();
@@ -78,17 +101,44 @@ if ($_POST) {
         <?php foreach ($livros as $livro): ?>
 
             <tr>
-                <td> <?=$livro['id']?></td>
-                <td> <?=$livro['titulo']?> </td>
-                <td> <?=$livro['genero']?> </td>
-                <td> <?=$livro['qtd_paginas']?> </td>
-                <td> 
-                    <a href="livroDel.php?id=<?=$livro['id']?>">Excluir</a>
+                <td> <?= $livro['id'] ?></td>
+                <td> <?= $livro['titulo'] ?> </td>
+                <td> <?php
+                        switch ($livro['genero']) {
+                            case 'A':
+                                echo "Aventura";
+                                break;
+
+                            case 'D':
+                                echo "Drama";
+                                break;
+
+                            case 'F':
+                                echo "Ficção";
+                                break;
+
+                            case 'R':
+                                echo "Romance";
+                                break;
+
+                            case 'O':
+                                echo "Outros";
+                                break;
+
+                            default:
+                                echo "Gênero indefinido";
+                                break;
+                        }
+                        ?> </td>
+                <td> <?= $livro['qtd_paginas'] ?> </td>
+                <td>
+                    <a href="livroDel.php?id=<?= $livro['id'] ?>" onclick=" return confirm('Deseja mesmo excluir?')">Excluir</a>
                 </td>
             </tr>
 
         <?php endforeach; ?>
     </table>
+    <script src="validacao.js"></script>
 </body>
 
 </html>
