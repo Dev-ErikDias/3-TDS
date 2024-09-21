@@ -5,7 +5,7 @@ CREATE TABLE jogos (
     nome VARCHAR(50) NOT NULL,
     genero VARCHAR(1) NOT NULL,
     ano INTEGER NOT NULL,
-    tipo VARCHAR(3) NOT NULL,
+    rede VARCHAR(3) NOT NULL,
     preco INTEGER NOT NULL,
     plataforma VARCHAR(5) NOT NULL,
     faixa_etaria INTEGER NOT NULL,
