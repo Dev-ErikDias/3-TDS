@@ -4,6 +4,7 @@ include_once('conexao.php');
 if(isset($_GET['id'])){
     $id = $_GET['id'];
     if($id){
+        $conn = Conexao::getConexao();
         $sql = "SELECT * FROM jogos WHERE id = ?";
         $stm = $conn->prepare($sql);
         $stm->execute([$id]);
