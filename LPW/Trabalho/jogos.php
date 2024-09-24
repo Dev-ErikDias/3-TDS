@@ -23,12 +23,12 @@ if($_POST){
     $genero = $_POST['genero'] ? $_POST['genero'] : null;
     $ano = trim($_POST['ano']) ? trim($_POST['ano']) : null;
 
-    $rede .= (isset($_POST['singleplayer']) ? $_POST['singleplayer'] : '') . (isset($_POST['multplayerO']) ? $_POST['multplayerO'] : '') . (isset($_POST['multplayerL']) ? $_POST['multplayerL'] : '');
+    $rede = ($_POST['singleplayer'] ? $_POST['singleplayer'] : '') . ($_POST['multplayerO'] ? $_POST['multplayerO'] : '') . ($_POST['multplayerL'] ? $_POST['multplayerL'] : '');
     
     $preco = trim($_POST['preco']) ? trim($_POST['preco']) : null;
 
-    $plataforma .= (isset($_POST['nintendo']) ? $_POST['nintendo'] : '') . (isset($_POST['computador']) ? $_POST['computador'] : '') . (isset($_POST['playstation']) ? $_POST['playstation'] : '');
-    $plataforma .= (isset($_POST['xbox']) ? $_POST['xbox'] : '') . (isset($_POST['mobile']) ? $_POST['mobile'] : '');
+    $plataforma = ($_POST['nintendo'] ? $_POST['nintendo'] : '') . ($_POST['computador'] ? $_POST['computador'] : '') . ($_POST['playstation'] ? $_POST['playstation'] : '');
+    $plataforma .= ($_POST['xbox'] ? $_POST['xbox'] : '') . ($_POST['mobile'] ? $_POST['mobile'] : '');
 
     $plataforma = $plataforma != '' ? $plataforma : null;
 
@@ -197,7 +197,7 @@ if($_POST){
             <label for="singleplayer">Singleplayer</label>
             <input type="checkbox" class="" name="multplayerO" value='O' <?= isset($_POST['multplayerO']) ? 'checked' : '' ?>>
             <label for="multiplayerO">Multiplayer Online</label>
-            <input type="checkbox" class="" name="multplayerL" value='L <?= isset($_POST['multplayerL']) ? 'checked' : '' ?>'>
+            <input type="checkbox" class="" name="multplayerL" value='L' <?= isset($_POST['multplayerL']) ? 'checked' : '' ?>>
             <label for="multiplayerL">Multiplayer Local</label>
         </div>
 
