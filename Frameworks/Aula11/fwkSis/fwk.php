@@ -1,5 +1,11 @@
 <?php
 require_once "../dao/Conexao.php";
+if(isset($_GET['excluir'])){
+    $x=new FWK();
+    $x->excluir($_GET['excluir'],$_GET['tabela']);
+ 
+ }
+
 
 class FWK
 {
@@ -84,4 +90,3 @@ class FWK
 
     }
 }
-
