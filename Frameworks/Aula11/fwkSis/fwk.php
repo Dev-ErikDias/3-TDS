@@ -64,7 +64,7 @@ class FWK
 
     function excluir($id,$tabela){
         $this->conexao();
-        $sql="delete from ".$tabela." where id=$id";
+        $sql="delete from ".$tabela." where id=:id";
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(':id', $id);
         $stmt->execute();
