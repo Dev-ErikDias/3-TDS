@@ -11,8 +11,6 @@
 
     $alunoCont = new AlunoController();
     $alunos = $alunoCont->listar();
-    print_r($alunos);
-
 
     include_once(__DIR__.'/../include/header.php');
     ?>
@@ -31,6 +29,17 @@
         </thead>
 
         <!-- Dados da tabela !-->
+         <?php foreach($alunos as $a): ?>
+
+            <tr>
+                <td><?= $a->getId();?></td>
+                <td><?= $a->getNome();?></td>
+                <td><?= $a->getIdade();?></td>
+                <td><?= $a->getEstrangeiroText();?></td>
+                <td><?= $a->getCurso();?></td>
+            </tr>
+
+        <?php endforeach; ?>    
     </table>
 
     <?php
