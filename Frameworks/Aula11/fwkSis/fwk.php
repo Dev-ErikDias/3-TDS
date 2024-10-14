@@ -50,14 +50,26 @@ class FWK
 
     }
 
+    function selecionarValues($obj) {
+        $reflection = new ReflectionClass($obj);
+        $properties = $reflection->getProperties();
+        $txt="";
+        for ($i=0; $i < count($properties); $i++) { 
+            $property = $reflection->getProperty($properties[$i]->name);
+            $property->setAccessible(true);
+            $valor=$property->getValue($obj)==NULL?"NULL":"'".$property->getValue($obj)."'";
+            $txt .= $valor.",";
+        }
+        $txt=substr($txt, 0, -1);
+        return $txt;
+    }
+
     function salvar($obj){
         $this->conexao();
         $tabela = $this->selecionarTabela(get_class($obj));
-        $colunas= $this->selecionarColunas($tabela);
-        $id = $obj->getId();
-        $nome = $obj->getNome();
-        $idade = $obj->getIdade();
-        $sql= "insert into ".$tabela." (".$colunas.") values(null,'$nome','$idade')";
+        $colunas = $this->selecionarColunas($tabela);
+        $values = $this->selecionarValues($obj); 
+        $sql= "insert into ".$tabela." (".$colunas.") values(".$values.")";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
     }
@@ -75,13 +87,17 @@ class FWK
     function lista($tabela){
         $this->conexao();
         $sql="select * from ".$tabela;
+
+        $colunas = $this->selecionarColunas($tabela);
+        $colunasArray = explode(',', $colunas); // Pega o txt retornado e separa em um array
+
         $query= $this->conn->query($sql);
         $dados=$query->fetchAll(PDO::FETCH_OBJ);
         $txt="";
         foreach ($dados as $dado){
-            $txt.= "id :".$dado->id;
-            $txt.= " Nome :  ".$dado->nome;
-            $dado_class = get_class($dado);
+            foreach ($colunasArray as $coluna) { //Realiza a busca dinâmicamente com um foreach do colunasArray
+                $txt .= ucfirst($coluna) . " : " . $dado->$coluna . " ";
+            }
             $txt.= " - <a href='../fwkSis/FWK.php?excluir=$dado->id&tabela=".$tabela."'>excluir</a>";
             $txt.= " <hr>  ";
 
