@@ -50,7 +50,7 @@ class FWK
 
     }
 
-    function selecionarValues($obj) {
+    function selecionarValues($obj){
         $reflection = new ReflectionClass($obj);
         $properties = $reflection->getProperties();
         $txt="";
@@ -64,6 +64,16 @@ class FWK
         return $txt;
     }
 
+    function buscaPorId($id, $tabela){
+        $this->conexao();
+        $colunas = $this->selecionarColunas($tabela);
+        $vet = explode(",", $colunas);
+        $sql = "select * from ".$tabela." where ".$vet[0]. "=".$id;
+        $query = $this->conn->query($sql);
+        $dados = $query->fetch(PDO::FETCH_OBJ);
+        return $dados;
+    }
+    
     function salvar($obj){
         $this->conexao();
         $tabela = $this->selecionarTabela(get_class($obj));
@@ -74,7 +84,7 @@ class FWK
         $stmt->execute();
     }
 
-    function excluir($id,$tabela){
+    function excluir($id, $tabela){
         $this->conexao();
         $sql="delete from ".$tabela." where id=:id";
         $stmt = $this->conn->prepare($sql);
@@ -104,5 +114,19 @@ class FWK
         }
         return $txt;
 
+    }
+
+    function alterar($obj){
+        $this->conexao();
+        $tabela = $this->selecionarTabela(get_class($obj));
+        $colunas = $this->selecionarColunas($tabela);
+        $valores = $this->selecionarValues($obj);
+        $vetColunas = explode(",", $colunas);
+        $vetValores = explode(",", $valores);
+        for($i=1;$i<sizeof($vetColunas);$i++){
+            $sql = "update from ". $tabela . " set ". $vetColunas[$i] . "=" . $vetValores[$i] . " where " . $vetColunas[0] . "=" . $vetValores[0];
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute();
+        }
     }
 }
