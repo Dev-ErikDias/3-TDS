@@ -2,7 +2,7 @@
 include_once(__DIR__.'/../util/Connection.php');
 include_once(__DIR__.'/../model/aluno.php');
 
-class alunoDAO{
+class AlunoDAO{
 
     private $conn;
 
@@ -22,6 +22,16 @@ class alunoDAO{
 
         $alunos = $this->mapAlunos($result);
         return $alunos;
+    }
+
+    public function insert(array $aluno){
+        $sql = "INSERT INTO alunos (nome, idade, estrangeiro, id_curso) VALUES ('". $aluno['nome'] . "', " . $aluno['idade'] . ", '". 
+        $aluno['estrang'] . "', " . $aluno['curso'] . ");";
+
+        $stm = $this->conn->prepare($sql);
+        $stm->execute();
+        
+        return "Aluno cadastrado";
     }
 
     private function mapAlunos(array $result){
@@ -45,6 +55,7 @@ class alunoDAO{
 
         return $alunos;
     }
+
 }
 
 ?>
