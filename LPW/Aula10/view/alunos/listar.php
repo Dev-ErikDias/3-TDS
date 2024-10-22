@@ -1,3 +1,4 @@
+
 <?php
 
 //Teste de conexão com a base de dados
@@ -62,6 +63,7 @@ include_once(__DIR__.'/../include/header.php');
         <th>Idade</th>
         <th>Estrangeiro</th>
         <th>Curso</th>
+        <th></th>
     </thead>
 
     <!-- Dados da tabela !-->
@@ -73,6 +75,7 @@ include_once(__DIR__.'/../include/header.php');
             <td><?= $a->getIdade();?></td>
             <td><?= $a->getEstrangeiroText();?></td>
             <td><?= $a->getCurso();?></td>
+            <td> <a href="excluir.php?id=<?= $a->getId()?>" onclick=" return confirm('Deseja mesmo excluir <?= $a->getNome()?>?')"> <img src="__DIR__/../../../img/btn_excluir.png" alt=""></a> </td>
         </tr>
 
     <?php endforeach; ?>    
