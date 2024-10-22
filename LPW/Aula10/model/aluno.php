@@ -3,18 +3,18 @@ include_once(__DIR__.'/curso.php');
 
 class Aluno{
     
-    private int $id;
-    private string $nome;
-    private int $idade;
-    private string $estrangeiro;
-    private Curso $curso;
+    private ?int $id;
+    private ?string $nome;
+    private ?int $idade;
+    private ?string $estrangeiro;
+    private ?Curso $curso;
 
     
 
     /**
      * Get the value of id
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -22,7 +22,7 @@ class Aluno{
     /**
      * Set the value of id
      */
-    public function setId(int $id): self
+    public function setId(?int $id): self
     {
         $this->id = $id;
 
@@ -32,7 +32,7 @@ class Aluno{
     /**
      * Get the value of nome
      */
-    public function getNome(): string
+    public function getNome(): ?string
     {
         return $this->nome;
     }
@@ -40,7 +40,7 @@ class Aluno{
     /**
      * Set the value of nome
      */
-    public function setNome(string $nome): self
+    public function setNome(?string $nome): self
     {
         $this->nome = $nome;
 
@@ -50,7 +50,7 @@ class Aluno{
     /**
      * Get the value of idade
      */
-    public function getIdade(): int
+    public function getIdade(): ?int
     {
         return $this->idade;
     }
@@ -58,7 +58,7 @@ class Aluno{
     /**
      * Set the value of idade
      */
-    public function setIdade(int $idade): self
+    public function setIdade(?int $idade): self
     {
         $this->idade = $idade;
 
@@ -68,7 +68,7 @@ class Aluno{
     /**
      * Get the value of estrangeiro
      */
-    public function getEstrangeiro(): string
+    public function getEstrangeiro(): ?string
     {
         return $this->estrangeiro;
     }
@@ -86,19 +86,17 @@ class Aluno{
     /**
      * Set the value of estrangeiro
      */
-    public function setEstrangeiro(string $estrangeiro): self
+    public function setEstrangeiro(?string $estrangeiro): self
     {
         $this->estrangeiro = $estrangeiro;
 
         return $this;
     }
 
-    
-
     /**
      * Get the value of curso
      */
-    public function getCurso(): Curso
+    public function getCurso(): ?Curso
     {
         return $this->curso;
     }
@@ -106,7 +104,7 @@ class Aluno{
     /**
      * Set the value of curso
      */
-    public function setCurso(Curso $curso): self
+    public function setCurso(?Curso $curso): self
     {
         $this->curso = $curso;
 
