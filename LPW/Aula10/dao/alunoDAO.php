@@ -24,14 +24,17 @@ class AlunoDAO{
         return $alunos;
     }
 
-    public function insert(array $aluno){
-        $sql = "INSERT INTO alunos (nome, idade, estrangeiro, id_curso) VALUES ('". $aluno['nome'] . "', " . $aluno['idade'] . ", '". 
-        $aluno['estrang'] . "', " . $aluno['curso'] . ");";
+    public function insert(Aluno $aluno){
+        $sql = "INSERT INTO alunos (nome, idade, estrangeiro, id_curso) VALUES (?, ?, ?, ?)";
 
         $stm = $this->conn->prepare($sql);
-        $stm->execute();
-        
-        return "Aluno cadastrado";
+        $stm->execute(array($aluno->getNome(), $aluno->getIdade(), $aluno->getEstrangeiro(), $aluno->getCurso()->getId()));
+    }
+
+    public function delete($id){
+        $sql = "DELETE FROM alunos WHERE id=?";
+        $stm = $this->conn->prepare($sql);
+        $stm->execute(array($id));
     }
 
     private function mapAlunos(array $result){
