@@ -63,11 +63,11 @@ include_once(__DIR__.'/../include/header.php');
         <th>Idade</th>
         <th>Estrangeiro</th>
         <th>Curso</th>
-        <th></th>
+        <th>Ações</th>
     </thead>
 
     <!-- Dados da tabela !-->
-        <?php foreach($alunos as $a): ?>
+        <?php foreach($alunos as $a): ?> 
 
         <tr>
             <td><?= $a->getId();?></td>
@@ -75,7 +75,8 @@ include_once(__DIR__.'/../include/header.php');
             <td><?= $a->getIdade();?></td>
             <td><?= $a->getEstrangeiroText();?></td>
             <td><?= $a->getCurso();?></td>
-            <td> <a href="excluir.php?id=<?= $a->getId()?>" onclick=" return confirm('Deseja mesmo excluir <?= $a->getNome()?>?')"> <img src="__DIR__/../../../img/btn_excluir.png" alt=""></a> </td>
+            <td> <a href="excluir.php?id=<?= $a->getId()?>" onclick=" return confirm('Deseja mesmo excluir <?= $a->getNome()?>?')"> <img src="__DIR__/../../../img/btn_excluir.png" alt=""></a> 
+            <a href="alterar.php?id=<?= $a->getId()?>"> <img src="__DIR__/../../../img/btn_editar.png" alt=""></a> </td>
         </tr>
 
     <?php endforeach; ?>    
