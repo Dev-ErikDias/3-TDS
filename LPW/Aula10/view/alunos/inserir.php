@@ -1,38 +1,48 @@
 <?php
-include_once(__DIR__.'/../../controller/alunoController.php');
+include_once(__DIR__."/../../model/aluno.php");
+include_once(__DIR__."/../../model/curso.php");
+include_once(__DIR__."/../../controller/alunoController.php");
 
-$erros = array();
-
+$msgErro = "";
+$aluno = null;
 if(isset($_POST['nome'])){
-    $nome = trim($_POST['nome']) ? trim($_POST['nome']) : null;
-    $idade = trim($_POST['idade']) ? trim($_POST['idade']) : null;
-    $estrang = trim($_POST['estrang']) ? trim($_POST['estrang']) : null;
-    $curso = trim($_POST['curso']) ? trim($_POST['curso']) : null;
-
-
-    if(!$nome){
-        array_push($erros, "Infome o nome");
-    } 
-    if(!$idade){
-        array_push($erros, "Infome a idade");
+    
+    $nome = trim($_POST['nome'])? trim($_POST['nome']):null;
+    $idade = is_numeric($_POST['idade'])?$_POST['idade']:null;
+    $estrang = trim($_POST['estrang'])?trim($_POST['estrang']):null;
+    $curso = trim($_POST['selCurso'])?$_POST['selCurso']:null;
+    
+    
+    $aluno = new Aluno();
+    $aluno->setIdade($idade);
+    $aluno->setNome($nome);
+    
+    $aluno->setEstrangeiro($estrang);
+    
+    if($curso){
+        
+        $cursoObj = new Curso();
+        $cursoObj->setId($curso);
+        $aluno->setCurso($cursoObj);
+    }else{
+        $aluno->setCurso(null);
     }
-    if(!$estrang){
-        array_push($erros, "Infome se é ou não estrangeiro");
+    
+    $alunoCont = new AlunoController();
+    $erros=$alunoCont->inserir($aluno);
+    if(count($erros)<= 0){
+        
+        header("location: listar.php");
+        
+        
+    }else{
+        $msgErro = implode("<br>",$erros);
+        //echo "<p style='color: red;'>".implode("<br>",$erros)."</p>";
     }
-    if(!$curso){
-        array_push($erros, "Infome o curso");
-    }
-
-    if(empty($erros)){
-        $alunoCont = new AlunoController();
-
-        echo $alunoCont->cadastrar($_POST);
-    }else{ 
-        echo implode("<br>", $erros);
-    }
-
-    header("Location: listar.php");
+    
 }
 
-include('form.php');
+echo "<h3>Cadastrar Aluno</h3>";
+
+include("form.php");
 ?>
