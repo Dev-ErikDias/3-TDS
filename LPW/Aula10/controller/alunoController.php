@@ -1,38 +1,51 @@
 <?php
-include_once(__DIR__.'/../dao/alunoDAO.php');
-include_once(__DIR__.'/../model/aluno.php');
-include_once(__DIR__.'/../model/curso.php');
+
+include_once(__DIR__."/../dao/alunoDAO.php");
+include_once(__DIR__."/../service/alunoService.php");
 
 class AlunoController{
 
-    public function listar(){
-        $alunoDao = new AlunoDAO();
+    private $alunoDao;
+    private $alunoService;
 
-        $alunos = $alunoDao->list();
-        return $alunos;
+    public function __construct(){
+        $this->alunoDao = new AlunoDao();
+        $this->alunoService = new AlunoService();
+    }
+
+    public function listar() {
         
+        $alunos = $this->alunoDao->list();
+        return $alunos;
     }
 
-    public function cadastrar(array $aluno){
-        $alunoDao = new AlunoDAO();  
-    
-        $alunoObj = new Aluno();
-        $alunoObj->setNome($aluno['nome']);
-        $alunoObj->setIdade($aluno['idade']);
-        $alunoObj->setEstrangeiro($aluno['estrang']);
+    public function inserir($aluno){
+        $erros = $this->alunoService->validarDados($aluno);
+        if(count($erros)>0){
+            return $erros;
+        }
 
-        $cursoObj = new Curso();
-        $cursoObj->setId($aluno['curso']);
-
-        $alunoObj->setCurso($cursoObj);     
-
-        return $alunoDao->insert($alunoObj);
+        $this->alunoDao->insert($aluno);
+        return array();
     }
 
-    public function excluir($id){
-        $alunoDao = new AlunoDAO();
+    public function deletar($id){
+        $this->alunoDao->delete($id);
+    }
 
-        return $alunoDao->delete($id);
+    public function buscarPorId($id){
+        $aluno = $this->alunoDao->findById($id);
+        return $aluno;
+    }
+
+    public function alterar(Aluno $aluno){
+        $erros = $this->alunoService->validarDados($aluno);
+        if(count($erros)>0){
+            return $erros;
+        }
+
+        $this->alunoDao->update($aluno);
+        return array();
     }
 }
 
